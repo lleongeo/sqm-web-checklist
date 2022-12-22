@@ -1,0 +1,82 @@
+import React from 'react'
+import { NavLink, useLocation } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import dict from 'src/config/iconDictionary'
+import { CBadge } from '@coreui/react'
+
+export const AppSidebarNav = ({ items }) => {
+  const location = useLocation()
+
+  const navLink = (name, icon, badge) => {
+    let newIcon = icon ? dict.filter((d) => d.old === icon) : null
+
+    return (
+      <>
+        {newIcon && newIcon.length > 0 ? newIcon[0].new : null}
+        {name && name}
+        {badge && (
+          <CBadge color={badge.color} className="ms-auto">
+            {badge.text}
+          </CBadge>
+        )}
+      </>
+    )
+  }
+
+  const navItem = (item, index) => {
+    const { component, name, badge, icon, ...rest } = item
+    const Component = component
+    if (rest.hasOwnProperty('idCategoria'))
+      delete rest.idCategoria
+
+    if (rest.hasOwnProperty('idCategoriaPadre'))
+      delete rest.idCategoriaPadre
+
+    return (
+      <Component
+        {...(rest.to &&
+          !rest.items && {
+          component: NavLink,
+        })}
+        key={index}
+        {...rest}
+      >
+        {navLink(name, icon, badge)}
+      </Component>
+    )
+  }
+  const navGroup = (item, index) => {
+    const { component, name, icon, to, ...rest } = item
+    const Component = component
+    if (rest.hasOwnProperty('idCategoria'))
+      delete rest.idCategoria
+
+    if (rest.hasOwnProperty('idCategoriaPadre'))
+      delete rest.idCategoriaPadre
+
+    return (
+      <Component
+        idx={String(index)}
+        key={index}
+        toggler={navLink(name, icon)}
+        visible={location.pathname.startsWith(to)}
+        {...rest}
+      >
+        {item.items?.map((item, index) =>
+          item.items ? navGroup(item, index) : navItem(item, index),
+        )}
+      </Component>
+    )
+  }
+
+  return (
+    <React.Fragment>
+      {items &&
+        items.map((item, index) => (item.items ? navGroup(item, index) : navItem(item, index)))}
+    </React.Fragment>
+  )
+}
+
+AppSidebarNav.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.any).isRequired,
+}

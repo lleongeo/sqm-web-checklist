@@ -1,0 +1,4 @@
+
+export const UX_SET_LANGUAGE = "UX_SET_LANGUAGE";
+export const UX_GET_LANGUAGE = "UX_GET_LANGUAGE";
+export const UX_SET_MENURAW = "UX_SET_MENURAW";

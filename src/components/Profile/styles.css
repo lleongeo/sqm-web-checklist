@@ -1,0 +1,9 @@
+.frame {
+    border:0;
+    height: 80vh;
+    width: 100%;
+}
+
+.btn-link {
+    color: #20a8d8 !important;
+}

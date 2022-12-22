@@ -1,0 +1,92 @@
+import Swal from 'sweetalert2';
+import languageConfig from '../../../../config/languageConfig';
+import kendo from '@progress/kendo-ui';
+import { API_URL_BASE, API_KEY } from '../../../../service/constants';
+import $ from "jquery";
+
+
+export const CreateCombobox = config => {
+
+   return fetch(`${API_URL_BASE}${config.url}`)
+      .then(function (response) {
+         return response.json();
+      })
+      .then(function (data) {
+
+         data.map((d, index) => {
+            return { text: d[config.text], value: d[config.value] };
+         }
+         )
+
+         //return data;
+      }).then(data => {
+         return data;
+      });
+}
+
+export const textAreaEditor = function (container, options) {
+   $('<textarea class = "k-textbox" data-bind="value: ' + options.field + '" rows="4" cols="25"></textarea>').appendTo(container);
+};
+
+export const dropDownEditor = (container, options, url, name, value, cascading = "") => {
+
+   var dropDownEditorResult = $('<input id=' + options.field + ' name="' + options.field + '"/>')
+      .appendTo(container)
+      .kendoComboBox({
+         cascadeFrom: cascading,
+         autoBind: true,
+         valuePrimitive: true,
+         dataTextField: name,
+         dataValueField: value,
+         filter: "contains",
+         dataSource: {
+            type: "json",
+            transport: {
+               read: {
+                  url: CreateUrlApi(url),
+                  dataType: "json",
+                  type: "get",
+                  beforeSend: function (req) {
+                     req.setRequestHeader('apikey', API_KEY);
+                     req.setRequestHeader('language', 'EN');
+                  }
+               },
+            },
+         }
+      });
+
+   return dropDownEditorResult;
+
+}
+
+export const colorPickerEditor = (container, options) => {
+
+   if (options.model.colorHex === null || options.model.colorHex === "" || options.model.colorHex === undefined) {
+      options.model.colorHex = "#d24949";
+   }
+
+   $('<input name="' + options.field + '"/>')
+      .appendTo(container)
+      .kendoColorPicker({
+         buttons: true,
+         value: options.model.colorHex
+      });
+
+   // if (options.model.colorHex !== null && options.model.colorHex !== "" && options.model.colorHex !== undefined) {
+
+   //    options.model.colorHex = options.model.colorHex.toLocaleLowerCase().replace("0xff", "");
+   // }
+
+}
+
+export const CreateUrlApi = (url, params = {}, baseUrl = API_URL_BASE) => {
+   var _url = new URL(`${baseUrl}${url}`);
+
+   if(Object.entries(params).length !== 0){
+      
+      _url.search = new URLSearchParams(params).toString(); 
+      return _url.href;
+   }
+   
+   return _url.href;
+}

@@ -1,0 +1,15 @@
+.Dropzone {
+    background-color: white;
+  border: 2px dashed #c1c1c1;
+  padding: 22px 20px 10px 20px;
+  text-align: center;
+}
+
+.Dropzone:hover {
+border: 2px dashed #6FB755;
+}
+
+.Dropzone.active {
+  border: 2px dashed #6FB755;
+  background: #f8fff6
+}
