@@ -48,12 +48,14 @@
     "@progress/kendo-react-intl": "^5.9.0",
     "@progress/kendo-theme-default": "^5.12.0",
     "@progress/kendo-ui": "^2022.3.1109",
+    "bootstrap": "^5.2.3",
     "chart.js": "^3.9.1",
     "classnames": "^2.3.1",
     "cldr-dates-full": "^42.0.0",
     "cldr-numbers-full": "^42.0.0",
     "core-js": "^3.24.1",
-    "d3": "^7.7.0",
+    "d3": "^7.8.1",
+    "deepdash": "^5.3.9",
     "jquery": "^3.6.2",
     "moment": "^2.29.4",
     "node-sass": "^7.0.3",
@@ -73,7 +75,8 @@
     "redux-thunk": "^2.4.2",
     "simplebar-react": "^2.4.1",
     "sweetalert2": "^11.6.15",
-    "underscore": "^1.13.6"
+    "underscore": "^1.13.6",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -83,7 +86,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "2.7.1",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "sass": "^1.54.4",
     "web-vitals": "^2.1.4"
   },
