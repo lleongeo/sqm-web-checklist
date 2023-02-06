@@ -12,6 +12,7 @@ import GridForm from './GridForm'
 import moment from 'moment'
 import GvdDatePicker from '../DatePicker'
 import { DateRangeValidator } from 'src/service/helper'
+import { ExcelExport } from '@progress/kendo-react-excel-export'
 
 const EditorGrid = ({ columns, gridConfig }) => {
   const lang = useSelector(state => state.ux.language)
@@ -28,6 +29,7 @@ const EditorGrid = ({ columns, gridConfig }) => {
   const [datetimeFrom, setDatetimeFrom] = useState(null)
   const [datetimeTo, setDatetimeTo] = useState(null)
   const [loadFilter, setLoadFilter] = useState(languageConfig[lang].filter.buttonText)
+  const [exportar, setExport] = useState(null);
 
   const selectionChange = (event) => {
     const xdata = tableData.map(item => {
@@ -83,7 +85,6 @@ const EditorGrid = ({ columns, gridConfig }) => {
   }
 
   const handleOnClick = () => {
-    console.log(`-------`)
     fetch(`${API_URL_BASE}${gridConfig.module}?desde=${moment(datetimeFrom).format()}&hasta=${moment(datetimeTo).add(23, 'hours').add(59, 'minutes').add(59, 'seconds').format()}`, {
       method: "GET",
       headers: new Headers({
@@ -128,6 +129,8 @@ const EditorGrid = ({ columns, gridConfig }) => {
   }
 
   const read = () => {
+    setData(null)
+    setTableData(null)
     setLoadFilter(<><i className="fal fa-cog fa-spin" />{` ${languageConfig[lang].filter.buttonText}`}</>)
     var { error } = DateRangeValidator(datetimeFrom, datetimeTo)
     if (error) {
@@ -155,6 +158,10 @@ const EditorGrid = ({ columns, gridConfig }) => {
           console.log("Fetch Error :-S", err)
         })
     }
+  }
+
+  const exportAction = () => {
+    exportar.save();
   }
 
   useEffect(() => {
@@ -207,75 +214,91 @@ const EditorGrid = ({ columns, gridConfig }) => {
         </CCol>
         <CCol xs="12">
           {!data || !tableData ? null :
-            <Grid
-              pageable={true}
-              sortable={true}
-              filterable={true}
-              data={process(tableData, dataState)}
-              {...dataState}
-              onDataStateChange={e => {
-                setDataState(e.dataState)
-              }}
-              style={{ height: '600px' }}
-              reorderable={true}
-              resizable={true}
-              selectable={true}
-              selectedField="selected"
-              onSelectionChange={selectionChange}
-              messages={{
-                "commands": {
-                  "cancel": languageConfig[lang].kendo.grid.commands.cancel,
-                  "canceledit": languageConfig[lang].kendo.grid.commands.canceledit,
-                  "create": languageConfig[lang].kendo.grid.commands.create,
-                  "destroy": languageConfig[lang].kendo.grid.commands.destroy,
-                  "edit": languageConfig[lang].kendo.grid.commands.edit,
-                  "excel": languageConfig[lang].kendo.grid.commands.excel,
-                  "pdf": languageConfig[lang].kendo.grid.commands.pdf,
-                  "save": languageConfig[lang].kendo.grid.commands.save,
-                  "select": languageConfig[lang].kendo.grid.commands.select,
-                  "update": languageConfig[lang].kendo.grid.commands.update,
-                },
-                "editable": {
-                  "cancelDelete": languageConfig[lang].kendo.grid.editable.cancelDelete,
-                  "confirmation": languageConfig[lang].kendo.grid.editable.confirmation,
-                  "confirmDelete": languageConfig[lang].kendo.grid.editable.confirmDelete,
-                },
-
-                "noRecords": languageConfig[lang].kendo.grid.noRecords,
-              }}
+            <ExcelExport
+              data={data}
+              ref={exporter => setExport(exporter)}
             >
-              {
-                !gridConfig.isCRUD ? null :
-                  gridConfig.module === 'tocopilla' && tableData.some(x => x.selected && x.estado === 'null') ? null : <GridToolbar>
+              <Grid
+                pageable={true}
+                sortable={true}
+                filterable={true}
+                data={process(tableData, dataState)}
+                {...dataState}
+                onDataStateChange={e => {
+                  setDataState(e.dataState)
+                }}
+                style={{ height: '600px' }}
+                reorderable={true}
+                resizable={true}
+                selectable={true}
+                selectedField="selected"
+                onSelectionChange={selectionChange}
+                messages={{
+                  "commands": {
+                    "cancel": languageConfig[lang].kendo.grid.commands.cancel,
+                    "canceledit": languageConfig[lang].kendo.grid.commands.canceledit,
+                    "create": languageConfig[lang].kendo.grid.commands.create,
+                    "destroy": languageConfig[lang].kendo.grid.commands.destroy,
+                    "edit": languageConfig[lang].kendo.grid.commands.edit,
+                    "excel": languageConfig[lang].kendo.grid.commands.excel,
+                    "pdf": languageConfig[lang].kendo.grid.commands.pdf,
+                    "save": languageConfig[lang].kendo.grid.commands.save,
+                    "select": languageConfig[lang].kendo.grid.commands.select,
+                    "update": languageConfig[lang].kendo.grid.commands.update,
+                  },
+                  "editable": {
+                    "cancelDelete": languageConfig[lang].kendo.grid.editable.cancelDelete,
+                    "confirmation": languageConfig[lang].kendo.grid.editable.confirmation,
+                    "confirmDelete": languageConfig[lang].kendo.grid.editable.confirmDelete,
+                  },
 
-                    <CButton
-                      onClick={() => CreateEdit({ act: 'edit' })}
-                      className="float-right ml-1"
-                      color="primary"
-                      disabled={tableData.filter(x => x.selected).length <= 0}
-                    >
-                      <i className="fal fa-edit" style={{ marginRight: '5px' }}></i>
-                      {" "}
-                      {languageConfig[lang].kendo.grid.commands.edit}
-                    </CButton>
+                  "noRecords": languageConfig[lang].kendo.grid.noRecords,
+                }}
+              >
+                {
+                  !gridConfig.isCRUD ? null :
+                    gridConfig.module === 'tocopilla' && tableData.some(x => x.selected && x.estado === 'null') ? null : <GridToolbar>
+                      <CButton
+                        title="Export Excel"
+                        color="success"
+                        onClick={exportAction}
+                        style={{color: '#fff'}}
+                      >
+                        <i className="fal fa-file-excel" style={{ marginRight: '5px' }}></i>
+                        {"  "}
+                        {languageConfig[lang].kendo.grid.commands.excel}
+                      </CButton>
+                      {"  "}
+                      <CButton
+                        onClick={() => CreateEdit({ act: 'edit' })}
+                        className="float-right ml-1"
+                        color="primary"
+                        disabled={tableData.filter(x => x.selected).length <= 0}
+                      >
+                        <i className="fal fa-edit" style={{ marginRight: '5px' }}></i>
+                        {" "}
+                        {languageConfig[lang].kendo.grid.commands.edit}
+                      </CButton>
 
-                    {"  "}
-                    <CButton
-                      onClick={() => deleteSelected()}
-                      className="float-right ml-1"
-                      color="danger"
-                      style={{ color: `white` }}
-                      disabled={tableData.filter(x => x.selected).length <= 0}
-                    >
-                      <i className="fal fa-times" style={{ marginRight: '5px' }}></i>
-                      {" "}
-                      {languageConfig[lang].kendo.grid.commands.nullify}
-                    </CButton>
-                  </GridToolbar>
-              }
-              <GridColumn field="selected" width="50px" filterable={false} />
-              {columns.map(col => <GridColumn key={`col_${col.field}`} {...col} />)}
-            </Grid>}
+                      {"  "}
+                      <CButton
+                        onClick={() => deleteSelected()}
+                        className="float-right ml-1"
+                        color="danger"
+                        style={{ color: `white` }}
+                        disabled={tableData.filter(x => x.selected).length <= 0}
+                      >
+                        <i className="fal fa-times" style={{ marginRight: '5px' }}></i>
+                        {" "}
+                        {languageConfig[lang].kendo.grid.commands.nullify}
+                      </CButton>
+                    </GridToolbar>
+                }
+                <GridColumn field="selected" width="50px" filterable={false} />
+                {columns.map(col => <GridColumn key={`col_${col.field}`} {...col} />)}
+              </Grid>
+            </ExcelExport>
+          }
         </CCol>
       </CRow>
 

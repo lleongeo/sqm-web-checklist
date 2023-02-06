@@ -207,7 +207,8 @@ const CustomGrid = ({ columns, gridConfig }) => {
 
   const handleOnClick = () => {
     setLoadFilter(<><i className="fal fa-cog fa-spin" />{` ${languageConfig[lang].filter.buttonText}`}</>)
-
+    setData([])
+    setTableData(null)
     var { error } = DateRangeValidator(datetimeFrom, datetimeTo)
 
     if (error) {

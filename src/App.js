@@ -1,7 +1,8 @@
 import React, { Suspense, useEffect, useState } from 'react'
 import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom'
 import './scss/style.scss'
-import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from '@azure/msal-react'
+import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal, MsalAuthenticationTemplate } from '@azure/msal-react'
+import { InteractionStatus, InteractionType, InteractionRequiredAuthError, AccountInfo } from "@azure/msal-browser"
 import { loginRequest } from 'src/config/authConfig'
 import { API_URL_BASE, API_KEY } from 'src/service/constants/index'
 import { useSelector, useDispatch } from 'react-redux'
@@ -28,7 +29,7 @@ const ProfileContent = () => {
 }
 
 const App = () => {
-  const { instance, accounts } = useMsal()
+  const { instance, accounts, inProgress } = useMsal()
   const [user, setUser] = useState(null)
   const selectedLanguage = useSelector(state => state.ux.language)
   const dispatch = useDispatch()
@@ -44,10 +45,10 @@ const App = () => {
 
     if (accounts.length > 0) return
 
-    async function fetchData() {
+    /* async function fetchData() {
       await handleLogin("redirect")
     }
-    fetchData()
+    fetchData() */
   }, [accounts, instance])
 
   useEffect(() => {
@@ -79,13 +80,14 @@ const App = () => {
 
   return (
     <div className="App">
-      <AuthenticatedTemplate>
+      <MsalAuthenticationTemplate
+        interactionType={InteractionType.Redirect}
+        authenticationRequest={loginRequest}
+        //errorComponent={ErrorComponent}
+        //loadingComponent={Loading}
+      >
         <ProfileContent />
-      </AuthenticatedTemplate>
-
-      <UnauthenticatedTemplate>
-        {`No hay ninguna sesion iniciada, por favor recargue la pagina para iniciar sesion.`}
-      </UnauthenticatedTemplate>
+      </MsalAuthenticationTemplate>
     </div>
   )
 }

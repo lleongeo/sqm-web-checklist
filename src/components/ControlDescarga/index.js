@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import GvdGrid from 'src/components/shared/Grid/GridWithFilter'
 import { useDispatch, useSelector } from 'react-redux'
-import { GetLocalizacionesAction, GetBodegasAction, GetPosicionesBodegaAction } from 'src/redux/actions/references/referencesActions'
+import { GetLocalizacionesAltAction, GetBodegasAltAction, GetPosicionesBodegaAltAction } from 'src/redux/actions/references/referencesActions'
 import { CSpinner } from '@coreui/react'
 
 const ControlDescargaGrid = () => {
@@ -27,9 +27,9 @@ const ControlDescargaGrid = () => {
    useEffect(() => {
       const fetchRef = () => {
          setPending(true)
-         dispatch(GetLocalizacionesAction())
-         dispatch(GetBodegasAction())
-         dispatch(GetPosicionesBodegaAction())
+         dispatch(GetLocalizacionesAltAction())
+         dispatch(GetBodegasAltAction())
+         dispatch(GetPosicionesBodegaAltAction())
       }
 
       if (
@@ -70,7 +70,6 @@ const ControlDescargaGrid = () => {
             { field: 'usuarioModificacion', title: 'UsuarioModificacion', width: '200px', editable: false },
          ])
    }, [localizacionesValues, bodegasValues, posicionesBodegasValues, pending, dispatch])
-   console.log({ localizacionesValues, bodegasValues, posicionesBodegasValues })
    return (columns !== null ?
       <div className="animated fadeIn">
          <GvdGrid columns={columns} gridConfig={gridConfig} />

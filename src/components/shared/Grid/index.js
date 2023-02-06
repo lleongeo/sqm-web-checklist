@@ -125,6 +125,8 @@ const EditorGrid = ({ columns, gridConfig }) => {
 
   useEffect(() => {
     const read = () => {
+      setData(null)
+      setTableData(null)
       fetch(`${API_URL_BASE}${gridConfig.module}`, {
         method: "GET",
         headers: new Headers({

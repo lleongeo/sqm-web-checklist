@@ -224,6 +224,8 @@ const CustomGrid = ({ columns, gridConfig }) => {
     }
 
     const handleOnClick = () => {
+        setData([])
+        setTableData(null)
         setLoadFilter(<><i className="fal fa-cog fa-spin" />{` ${languageConfig[lang].filter.buttonText}`}</>);
 
         var { error } = DateRangeValidator(datetimeFrom, datetimeTo);
@@ -247,7 +249,6 @@ const CustomGrid = ({ columns, gridConfig }) => {
             })
                 .then(response => response.json())
                 .then(response => {
-                    console.log({ response, camposFecha, gridConfig, columns })
                     setData(response.map(x => {
                         camposFecha[gridConfig.module].forEach(campo => {
                             x[campo] = moment(x[campo], "YYYY-MM-DDTHH:mm:ss").format("DD/MM/YYYY HH:mm:ss");
@@ -400,8 +401,9 @@ const CustomGrid = ({ columns, gridConfig }) => {
                                         title="Export Excel"
                                         color="success"
                                         onClick={exportAction}
+                                        style={{ color: '#fff' }}
                                     >
-                                        <i className="fal fa-file-excel"></i>
+                                        <i className="fal fa-file-excel" style={{ marginRight: '5px' }}></i>
                                         {"  "}
                                         {languageConfig[lang].kendo.grid.commands.excel}
                                     </CButton>
@@ -409,15 +411,31 @@ const CustomGrid = ({ columns, gridConfig }) => {
 
                                     {gridConfig.module !== "CheckListLock" ? null :
                                         <>
-                                            <CButton onClick={deleteSelected} className="float-right ml-1" color="danger"><i className="fal fa-times"></i> Eliminar</CButton>
-                                            <CButton onClick={LockUnlock} className="float-right ml-1" color="info"><i className="fal fa-lock"></i> Bloquear/Desbloquear</CButton>
+                                            <CButton onClick={deleteSelected} className="float-right ml-1" color="danger" style={{ color: '#fff' }}>
+                                                <i className="fal fa-times" style={{ marginRight: '5px' }}></i>
+                                                Eliminar
+                                            </CButton>
+                                            <CButton onClick={LockUnlock} className="float-right ml-1" color="info" style={{ color: '#fff' }}>
+                                                <i className="fal fa-lock" style={{ marginRight: '5px' }}></i>
+                                                Bloquear/Desbloquear
+                                            </CButton>
                                         </>}
 
                                     {gridConfig.module !== "CheckListDetails" ? null :
                                         <>
-                                            {selectedLocked ? null : <CButton onClick={() => deleteDetail()} className="float-right ml-1" color="info"><i className="fal fa-times"></i> Eliminar</CButton>}
+                                            {selectedLocked
+                                                ? null
+                                                : <CButton onClick={() => deleteDetail()} className="float-right ml-1" color="info" style={{ color: '#fff' }}>
+                                                    <i className="fal fa-times" style={{ marginRight: '5px' }}></i>
+                                                    Eliminar
+                                                </CButton>
+                                            }
+
                                             {/* {selectedLocked ? null : <CButton onClick={() => { }} className="float-right ml-1" color="info"><i className="fal fa-edit"></i> Editar</CButton>} */}
-                                            <CButton onClick={() => setFotoCModal(true)} className="float-right ml-1" color="info"><i className="fal fa-image"></i> Imágenes</CButton>
+                                            <CButton onClick={() => setFotoCModal(true)} className="float-right ml-1" color="info" style={{ color: '#fff' }}>
+                                                <i className="fal fa-image" style={{ marginRight: '5px' }}></i>
+                                                Imágenes
+                                            </CButton>
                                         </>}
 
                                 </GridToolbar>

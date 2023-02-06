@@ -1,107 +1,130 @@
 import * as r from "../actionTypes/references/referencesTypes"
-import {GetDataCombobox} from "../../../service/http"
+import { GetDataCombobox } from "../../../service/http"
 
 
 //Async
 
-const GetLocalizacionesAction =  () => {
+const GetLocalizacionesAction = () => {
     return async dispatch => {
-        var localizaciones =  await GetDataCombobox("localizaciones", "localizacion", "idLocalizacion");
+        var localizaciones = await GetDataCombobox("localizaciones", "localizacion", "idLocalizacion");
         dispatch(GetLocalizacionRefOk(localizaciones));
     }
 }
 
-const GetBodegasAction =  () => {
+const GetLocalizacionesAltAction = () => {
     return async dispatch => {
-        var bodegas =  await GetDataCombobox("bodegas", "bodega", "idBodega");
+        var localizaciones = await GetDataCombobox("localizaciones", "localizacion", "idInternoCliente");
+        dispatch(GetLocalizacionRefOk(localizaciones.filter(x => x.value !== undefined && x.value !== null)));
+    }
+};
+
+const GetBodegasAction = () => {
+    return async dispatch => {
+        var bodegas = await GetDataCombobox("bodegas", "bodega", "idBodega");
         dispatch(GetBodegasRefOk(bodegas));
     }
 };
 
-const GetPosicionesBodegaAction =  () => {
+const GetBodegasAltAction = () => {
     return async dispatch => {
-        var posicionesBodega =  await GetDataCombobox("posicionesbodegas", "posicion", "idPosicionBodega");
+        var bodegas = await GetDataCombobox("bodegas", "bodega", "idInternoCliente");
+        console.log({ bodegas })
+        dispatch(GetBodegasRefOk(bodegas.filter(x => x.value !== undefined && x.value !== null)));
+    }
+};
+
+const GetPosicionesBodegaAction = () => {
+    return async dispatch => {
+        var posicionesBodega = await GetDataCombobox("posicionesbodegas", "posicion", "idPosicionBodega");
         dispatch(GetPosicionesBodegaRefOk(posicionesBodega));
     }
 };
 
-const GetCondicionesAction =  () => {
+const GetPosicionesBodegaAltAction = () => {
     return async dispatch => {
-        var condiciones =  await GetDataCombobox("condiciones", "condicion", "idCondicion");
+        var posicionesBodega = await GetDataCombobox("posicionesbodegas", "posicion", "idInternoCliente");
+        console.log({ posicionesBodega })
+        dispatch(GetPosicionesBodegaRefOk(posicionesBodega.filter(x => x.value !== undefined && x.value !== null)));
+    }
+};
+
+const GetCondicionesAction = () => {
+    return async dispatch => {
+        var condiciones = await GetDataCombobox("condiciones", "condicion", "idCondicion");
         dispatch(GetCondicionesRefOk(condiciones));
     }
 };
 
-const GetEnvasesAction =  () => {
+const GetEnvasesAction = () => {
     return async dispatch => {
 
-        var envases =  await GetDataCombobox("envases", "envase", "idEnvase");
+        var envases = await GetDataCombobox("envases", "envase", "idEnvase");
         dispatch(GetEnvasesRefOk(envases));
     }
 };
 
-const GetProductosAction =  () => {
+const GetProductosAction = () => {
     return async dispatch => {
 
-        var productos =  await GetDataCombobox("productos", "producto", "idProducto");
+        var productos = await GetDataCombobox("productos", "producto", "idProducto");
         dispatch(GetProductosRefOk(productos));
     }
 };
 
-const GetDefectosAction =  () => {
+const GetDefectosAction = () => {
     return async dispatch => {
-        var defectos =  await GetDataCombobox("defectos", "defecto", "idDefecto");
+        var defectos = await GetDataCombobox("defectos", "defecto", "idDefecto");
         dispatch(GetDefectosRefOk(defectos));
     }
 };
 
-const GetUsuariosAction =  () => {
-  return async dispatch => {
-      var usuarios =  await GetDataCombobox("usuarios", "email", "idUsuario");
-      dispatch(GetUsuariosRefOk(usuarios));
-  }
+const GetUsuariosAction = () => {
+    return async dispatch => {
+        var usuarios = await GetDataCombobox("usuarios", "email", "idUsuario");
+        dispatch(GetUsuariosRefOk(usuarios));
+    }
 };
 
-const GetTransportistasAction =  () => {
-  return async dispatch => {
-      var transportistas =  await GetDataCombobox("transportistas", "name", "id");
-      dispatch(GetTransportistasRefOk(transportistas));
-  }
+const GetTransportistasAction = () => {
+    return async dispatch => {
+        var transportistas = await GetDataCombobox("transportistas", "name", "id");
+        dispatch(GetTransportistasRefOk(transportistas));
+    }
 };
 
-const GetLugarRevisionesAction =  () => {
-  return async dispatch => {
-      var lugarRevisiones =  await GetDataCombobox("lugarRevisiones", "name", "id");
-      dispatch(GetLugarRevisionesRefOk(lugarRevisiones));
-  }
+const GetLugarRevisionesAction = () => {
+    return async dispatch => {
+        var lugarRevisiones = await GetDataCombobox("lugarRevisiones", "name", "id");
+        dispatch(GetLugarRevisionesRefOk(lugarRevisiones));
+    }
 };
 
-const GetTipoContenedoresAction =  () => {
-  return async dispatch => {
-      var tipoContenedores =  await GetDataCombobox("tipoContenedores", "name", "id");
-      dispatch(GetTipoContenedoresRefOk(tipoContenedores));
-  }
+const GetTipoContenedoresAction = () => {
+    return async dispatch => {
+        var tipoContenedores = await GetDataCombobox("tipoContenedores", "name", "id");
+        dispatch(GetTipoContenedoresRefOk(tipoContenedores));
+    }
 };
 
-const GetContenedoresStatusAction =  () => {
-  return async dispatch => {
-      var contenedoresStatus =  await GetDataCombobox("contenedoresStatus", "name", "id");
-      dispatch(GetContenedoresStatusRefOk(contenedoresStatus));
-  }
+const GetContenedoresStatusAction = () => {
+    return async dispatch => {
+        var contenedoresStatus = await GetDataCombobox("contenedoresStatus", "name", "id");
+        dispatch(GetContenedoresStatusRefOk(contenedoresStatus));
+    }
 };
 
-const GetPersonalApoyoPerfilesAction =  () => {
-  return async dispatch => {
-      var personalApoyoPerfiles =  await GetDataCombobox("personalApoyoPerfiles/referencia", "name", "id");
-      dispatch(GetPersonalApoyoPerfilesRefOk(personalApoyoPerfiles));
-  }
+const GetPersonalApoyoPerfilesAction = () => {
+    return async dispatch => {
+        var personalApoyoPerfiles = await GetDataCombobox("personalApoyoPerfiles/referencia", "name", "id");
+        dispatch(GetPersonalApoyoPerfilesRefOk(personalApoyoPerfiles));
+    }
 };
 
-const GetPersonalApoyoAction =  () => {
-  return async dispatch => {
-      var personalApoyo =  await GetDataCombobox("personalApoyo/referencia", "name", "id");
-      dispatch(GetPersonalApoyoRefOk(personalApoyo));
-  }
+const GetPersonalApoyoAction = () => {
+    return async dispatch => {
+        var personalApoyo = await GetDataCombobox("personalApoyo/referencia", "name", "id");
+        dispatch(GetPersonalApoyoRefOk(personalApoyo));
+    }
 };
 
 //Actions
@@ -141,47 +164,50 @@ const GetDefectosRefOk = items => ({
 });
 
 const GetUsuariosRefOk = items => ({
-  type: r.READ_USUARIOS_OK,
-  payload: items
+    type: r.READ_USUARIOS_OK,
+    payload: items
 });
 
 const GetTransportistasRefOk = items => ({
-  type: r.READ_TRANSPORTISTAS_OK,
-  payload: items
+    type: r.READ_TRANSPORTISTAS_OK,
+    payload: items
 });
 
 const GetLugarRevisionesRefOk = items => ({
-  type: r.READ_LUGARREVISIONES_OK,
-  payload: items
+    type: r.READ_LUGARREVISIONES_OK,
+    payload: items
 });
 
 const GetTipoContenedoresRefOk = items => ({
-  type: r.READ_TIPOCONTENEDORES_OK,
-  payload: items
+    type: r.READ_TIPOCONTENEDORES_OK,
+    payload: items
 });
 
 const GetContenedoresStatusRefOk = items => ({
-  type: r.READ_CONTENEDORESESTATUSES_OK,
-  payload: items
+    type: r.READ_CONTENEDORESESTATUSES_OK,
+    payload: items
 });
 
 const GetPersonalApoyoPerfilesRefOk = items => ({
-  type: r.READ_PERSONALAPOYOPERFILES_OK,
-  payload: items
+    type: r.READ_PERSONALAPOYOPERFILES_OK,
+    payload: items
 });
 
 const GetPersonalApoyoRefOk = items => ({
-  type: r.READ_PERSONALAPOYOS_OK,
-  payload: items
+    type: r.READ_PERSONALAPOYOS_OK,
+    payload: items
 });
 
 export {
     GetLocalizacionesAction,
+    GetLocalizacionesAltAction,
     GetBodegasAction,
+    GetBodegasAltAction,
     GetCondicionesAction,
     GetEnvasesAction,
     GetProductosAction,
     GetPosicionesBodegaAction,
+    GetPosicionesBodegaAltAction,
     GetDefectosAction,
     GetUsuariosAction,
     GetContenedoresStatusAction,
